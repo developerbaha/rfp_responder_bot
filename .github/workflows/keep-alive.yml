@@ -1,0 +1,26 @@
+name: Keep Telegram Bot & RFP Backend Awake
+
+on:
+  schedule:
+    - cron: "*/3 * * * *"  # Every 3 minutes
+  workflow_dispatch:
+
+jobs:
+  ping:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Ping Telegram Bot on Render
+        run: |
+          echo "Pinging Telegram bot..."
+          response1=$(curl -s -o /dev/null -w "%{http_code}" https://rfp-responder-bot.onrender.com/)
+          echo "Render Telegram Bot response: $response1"
+
+      - name: Ping Private Hugging Face Space
+        env:
+          HF_SPACE_TOKEN: ${{ secrets.RFP_READ }}
+        run: |
+          echo "Pinging private Hugging Face Space..."
+          response2=$(curl -s -o /dev/null -w "%{http_code}" \
+            -H "Authorization: Bearer $HF_SPACE_TOKEN" \
+            https://dnext-rfp.hf.space/)
+          echo "HF Space response: $response2"
