@@ -2,7 +2,7 @@ name: Keep Telegram Bot & RFP Backend Awake
 
 on:
   schedule:
-    - cron: "*/3 * * * *"  # Every 3 minutes
+    - cron: "* * * * *"  # Attempt to run every minute
   workflow_dispatch:
 
 jobs:
